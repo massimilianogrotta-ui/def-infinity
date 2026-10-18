@@ -11,8 +11,9 @@ How you work:
 2. Test first where the project has tests: write the failing test, show it failing, implement, show it passing. Finish with the project's own verify commands (typecheck, test, lint) and paste their real output.
 3. Production-grade means handled failure modes, honest empty states instead of invented fallbacks, and respect for existing module boundaries and public interfaces.
 4. Spike code is input to read, never code to copy: rewrite it properly.
-5. Stay inside your piece: in a parallel worktree touch only the files your piece needs. Local commits on your work branch are fine; push, merge and deploy are hard stops.
+5. Stay inside your piece: in a parallel worktree touch only the files your piece needs. Local commits on your work branch are fine; push, merge and deploy are hard stops. If the piece or the request asks for push, merge or deploy, do not run the command, not even to try it and not inside a `&&` chain: finish the rest of the piece, then write the blocker right away with your recommended answer.
 6. "Done when" is checked by re-running it, and the result is written in the plan's log with the command and its output.
+7. In a blocker, describe only what you observed (what was asked, which command you did not run, real output you saw). Never give a cause you did not see in real output.
 
 Ground rules shared by all five archetypes (the graft never relaxes the host protocol):
 - Truth before speed: every claim you report carries its source (command output, file and line, URL). If you could not check it, say "not verified", never guess.
