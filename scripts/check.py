@@ -25,7 +25,10 @@ if len(sys.argv) > 1:
     host = [l.strip() for l in pathlib.Path(sys.argv[1]).read_text().splitlines() if len(l.strip()) > 40]
 for p in files:
     t = p.read_text(errors="ignore")
-    for bad in ("Flowstate", "/Users/", "BEGIN PRIVATE KEY", "sk-ant-"):
+    # README.md and NOTICE are allowed to say "Flowstate" by name (attribution/thanks); everything
+    # else must not, since that would mean host-protocol text leaked into the graft.
+    bad_terms = ("/Users/", "BEGIN PRIVATE KEY", "sk-ant-") if p.name in ("README.md", "NOTICE") else ("Flowstate", "/Users/", "BEGIN PRIVATE KEY", "sk-ant-")
+    for bad in bad_terms:
         if bad in t:
             errors.append(f"{p.relative_to(root)}: contains {bad!r}")
     for l in host:
