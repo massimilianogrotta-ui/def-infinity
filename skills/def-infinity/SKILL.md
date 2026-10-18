@@ -19,6 +19,7 @@ The host protocol stays the rail: align with the human, research with sources, p
 ## Cost rule: hooks fire only when they pay
 Every hook below has a trigger. If the trigger is not met, skip the hook and write one line saying why (for example "no spike: no not-verified fact blocks the plan"). Do not run a hook for ritual.
 Run the archetype INLINE (you follow its rules yourself) by default. Spawn the archetype subagent only when the piece is large, needs an isolated context, or can run in parallel with other work.
+Inline does not mean from memory: before running an archetype inline, read its file in `agents/` and follow every numbered rule in order (for the sweeper, the search for broken things comes before any removal).
 
 ## Hook 1 · Research: the fast spike lane
 After research, look at every item marked "not verified". Trigger: the plan depends on it AND a small experiment could settle it AND guessing wrong would cost a rework. Only then run the **prototyper** on it BEFORE planning (one spike per item, time-boxed). Proceed turns the item into a verified fact with the spike as its source; Kill records why and the plan routes around it. Items that cannot be settled by an experiment stay "not verified" as usual.
@@ -27,7 +28,7 @@ After research, look at every item marked "not verified". Trigger: the plan depe
 Next to the piece's Autonomy field, add `Archetype: <prototyper | builder | sweeper | grower | maintainer>` with a one-line reason. It decides whose rules run the piece (inline, or that subagent when the cost rule allows). A piece that mixes two kinds of work usually wants splitting only if the host protocol's own split rules allow it; otherwise name the main archetype.
 
 ## Hook 3 · Lock in: cleanup and cadence
-- Every locked-in plan ends with a **sweeper** pass: always the leak sweep (machine paths, secrets, scratch folders, debug leftovers) on the plan's diff; a full removal list only if the plan added more than about 300 lines or touched existing modules. A small plan does the pass inline as the last step, not as a separate piece. Visible deletions stay a human gate.
+- Every locked-in plan ends with a **sweeper** pass: always the leak sweep (machine paths, secrets, scratch folders, debug leftovers) on the plan's diff; a full removal list only if the plan added more than about 300 lines or touched existing modules. A small plan does the pass inline as the last step, not as a separate piece. Visible deletions stay a human gate. When the whole task is a cleanup, the sweeper's broken-things search (scripts and configs pointing at missing files or folders) runs first, and style-only edits are listed, not made.
 - Trigger for a **maintainer** check: the plan touches a live system where drift or decay is a real risk. Then add a maintainer check with a cadence (for example weekly) that compares the system with its declared source of truth and writes a health note.
 - A **grower** piece enters a plan only with data and a metric written down before the change.
 
