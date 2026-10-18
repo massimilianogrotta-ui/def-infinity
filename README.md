@@ -2,7 +2,7 @@
 
 Five work archetypes as Claude Code subagents, grafted onto a plan-first, proof-first build protocol.
 
-Status: experimental, under A/B test. Results will be added here.
+Status: validated on 2 real tasks (A/B/blind-review each), both in favor. See `docs/RISULTATI.md`.
 
 ## Why
 A good build protocol (align, research with sources, plan in pieces, lock in, run with proofs) mostly covers one kind of work: building an approved thing well. Products need four more kinds of work, as Boris Cherny pointed out: exploring many ideas and throwing most away, removing and simplifying, growing what runs using data, and keeping what runs healthy. DEF ∞ adds those four next to the builder without changing the protocol's rules.
