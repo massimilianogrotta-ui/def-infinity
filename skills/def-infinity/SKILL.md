@@ -19,7 +19,7 @@ The host protocol stays the rail: align with the human, research with sources, p
 ## Cost rule: hooks fire only when they pay
 Every hook below has a trigger. If the trigger is not met, skip the hook and write one line saying why (for example "no spike: no not-verified fact blocks the plan"). Do not run a hook for ritual.
 Run the archetype INLINE (you follow its rules yourself) by default. Spawn the archetype subagent only when the piece is large, needs an isolated context, or can run in parallel with other work.
-Inline does not mean from memory: before running an archetype inline, read its file in `agents/` and follow every numbered rule in order (for the sweeper, the search for broken things comes before any removal).
+Inline does not mean from memory: before running an archetype inline, read its file (`${CLAUDE_PLUGIN_ROOT}/agents/<archetype>.md`, in this plugin's folder, not the project) and follow every numbered rule in order (for the sweeper, the search for broken things comes before any removal).
 
 ## Hook 1 · Research: the fast spike lane
 After research, look at every item marked "not verified". Trigger: the plan depends on it AND a small experiment could settle it AND guessing wrong would cost a rework. Only then run the **prototyper** on it BEFORE planning (one spike per item, time-boxed). Proceed turns the item into a verified fact with the spike as its source; Kill records why and the plan routes around it. Items that cannot be settled by an experiment stay "not verified" as usual.
