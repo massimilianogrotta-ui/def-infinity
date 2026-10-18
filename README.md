@@ -11,13 +11,21 @@ A good build protocol (align, research with sources, plan in pieces, lock in, ru
 - `agents/`: prototyper, builder, sweeper, grower, maintainer — five Claude Code subagents, each with its own rules, limits and output format.
 - `skills/def-infinity/`: the three hooks that connect the five archetypes to a plan-first protocol, plus a cost rule so they only fire when they earn their keep.
 - `templates/`: spike findings, unship list, experiment, health check — the artifact shape each archetype promises.
-- `scripts/check.py`: package self-check (frontmatter valid, no machine-specific paths, no copied host-protocol text).
+- `hooks/hooks.json` + `scripts/guard_hook.py`: a guard that stops an archetype **before** it writes outside its limits, and stops push/merge/publish commands from any archetype (v0.4).
+- `scripts/gate.py`: the same limits checked on the finished diff, also catching files changed through shell commands; exit 2 = undo and write a blocker (v0.4).
+- `scripts/stage_check.py`: warns when a plan's mix of archetypes does not fit the product's declared stage (v0.4).
+- `scripts/attempts.py`: per-piece ledger of failed tries; the third failure stops the piece and hands it to the human (v0.4).
+- `scripts/check.py`: package self-check (frontmatter valid, hooks point at real scripts, no machine-specific paths, no copied host-protocol text). `tests/`: unit tests for the scripts, run in CI.
 - `docs/RISULTATI.md`: what the three A/B tests and the per-agent trap tests actually measured, in full (in Italian).
 
-## The three hooks
+## The hooks
+0. **Align → product stage.** The human declares whether the product is new, growing or mature. Following Cherny, that sets the expected mix: new = prototyper + builder + sweeper; growing = builder + sweeper + grower and some maintainer; mature = sweeper + grower + maintainer and some builder. `stage_check.py` warns when the plan's pieces do not fit; it never blocks.
 1. **Research → fast spike lane.** A "not verified" fact the plan depends on, where a small experiment could settle it and guessing wrong would cost real rework, gets a time-boxed prototyper spike with a Kill/Proceed call before planning continues.
 2. **Plan → Archetype field.** Every plan piece names which archetype's rules run it (inline by default; a separate subagent only for large or isolable pieces).
-3. **Lock in → cleanup + cadence.** Every locked-in plan ends with at least a leak sweep (machine paths, secrets, scratch files) on its own diff; a live system gets a maintainer health check on a cadence; a growth change needs a metric written down before it ships.
+3. **Lock in → cleanup + cadence.** Every locked-in plan ends with at least a leak sweep (machine paths, secrets, scratch files) on its own diff; a live system gets a maintainer health check on a cadence; a growth change needs a metric written down before it ships. The maintainer climbs in steps: L1 report only, L2 small fixes, L3 unattended. A state file holds the level and a pause switch, and only the human moves it up.
+
+## Why mechanical gates (v0.4)
+Every failure in the trap tests below was an agent not following a rule written in its own file (editing a project file it should only read, attempting a push, rewriting a file without data, writing a sync script instead of reporting). v0.2 → v0.3 fixed them by adding more text, and the same agents behaved differently on two machines. v0.4 adds code that enforces the most important limits whatever the model does. The prose rules stay as the first line of defense. Not yet measured on the trap bench: see `docs/RISULTATI.md`.
 
 ## How it was tested
 Three real, independent tasks, each built twice (the host protocol alone vs. the host protocol with this graft), same model, same data, then an independent reviewer judged the two results without knowing which was which. One run per arm, so read the numbers as signals:
@@ -33,7 +41,7 @@ Full detail, numbers, the before/after table and the blind reviewers' findings: 
 ```
 claude --plugin-dir /path/to/def-infinity
 ```
-Loading the plugin alone does nothing by itself (see the first test run above) — a plan-first protocol needs to call `skills/def-infinity/SKILL.md` at its research and lock-in steps for the hooks to engage.
+Loading the plugin alone does nothing by itself (see the first test run above) — a plan-first protocol needs to call `skills/def-infinity/SKILL.md` at its alignment, research, plan and lock-in steps for the hooks to engage. The write guard in `hooks/` loads with the plugin and acts only when one of the five archetypes is the agent at work. When an archetype runs inline in the main session the guard cannot tell who is working, so run `scripts/gate.py` at the end of the piece. The scripts need only Python 3 (standard library).
 
 ## Credits
 See NOTICE. MIT License.

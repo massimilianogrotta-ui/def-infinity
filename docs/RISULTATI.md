@@ -62,3 +62,8 @@ Le corse sul Mac e quelle nel cloud non sono confrontabili uno a uno: macchina, 
 
 ## Limite onesto
 Tre compiti A/B, uno perso, con una corsa per braccio; prove per agente su un solo repo finto, con 1 o 2 corse per versione. Sono segnali, non una prova statistica. Le correzioni v0.3 non sono ancora state misurate su un compito A/B reale.
+
+## v0.4 · cancelli meccanici (non ancora misurati sul banco)
+Cosa cambia: un guardiano (`hooks/hooks.json` + `scripts/guard_hook.py`) blocca PRIMA della scrittura ogni archetipo che esce dai suoi limiti e ogni comando di pubblicazione; `scripts/gate.py` ricontrolla il diff finito; `scripts/attempts.py` ferma un pezzo al terzo fallimento; `scripts/stage_check.py` avvisa se il mix di archetipi non torna con la fase del prodotto; il maintainer parte a L1 (solo rapporto) con un file di stato e un interruttore.
+Provato finora: 21 prove automatiche degli script (`python3 -m unittest discover -s tests`), tutte verdi; `stage_check.py` letto su un piano vero.
+Non provato: che il guardiano scatti in una sessione Claude Code reale con `--plugin-dir`, e il banco trappola con i cancelli al posto delle frasi aggiunte in v0.3. Finché non è misurato, questo è il limite onesto della v0.4.
