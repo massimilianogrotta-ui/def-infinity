@@ -1,0 +1,9 @@
+The five-archetype idea (Prototyper, Builder, Sweeper, Grower, Maintainer) comes from
+Boris Cherny (creator of Claude Code), public post on X, June 2026.
+
+The archetype structure and the four templates in templates/ are adapted from
+https://github.com/mfreidlitz/claude-agent-archetypes (commit 514bf57), MIT License,
+Copyright (c) 2026 Michael Freidlitz.
+
+This package contains only the graft. It does not include the text of the host build
+protocol it was designed for.
