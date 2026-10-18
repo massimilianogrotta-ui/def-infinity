@@ -7,7 +7,7 @@ Copyright (c) 2026 Michael Freidlitz.
 
 Thanks to Flowstate Technologies, whose build protocol ("DEF" / The Loop: align, research with
 sources, plan in pieces with re-runnable proofs, lock in, run with proofs re-run) is the host
-protocol this package was designed to graft onto, and against which it was validated. That host
+protocol this package was designed to graft onto, and against which it was tested. That host
 protocol is a separate, closed-source work of Flowstate Technologies; this package does not include
 any of its text and does not require it to be installed somewhere else first — the three hooks in
 skills/def-infinity/SKILL.md describe where they attach in plain terms, so the graft can be adapted
