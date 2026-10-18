@@ -1,6 +1,6 @@
 {
   "name": "def-infinity",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Five work archetypes (Prototyper, Builder, Sweeper, Grower, Maintainer) grafted onto a plan-first, proof-first build protocol.",
   "author": { "name": "Massimiliano Grotta" },
   "license": "MIT",
