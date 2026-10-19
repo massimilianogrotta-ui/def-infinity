@@ -19,6 +19,19 @@ if found != want:
     errors.append(f"agents: {sorted(found)} != {sorted(want)}")
 if not (root / "skills/def-infinity/SKILL.md").exists():
     errors.append("skill missing")
+try:
+    hooks = json.loads((root / "hooks/hooks.json").read_text())["hooks"]["PreToolUse"]
+    for h in (x for e in hooks for x in e["hooks"]):
+        script = re.search(r"scripts/[\w.]+", h["command"])
+        if not script or not (root / script.group(0)).exists():
+            errors.append(f"hooks.json: command points at a missing script: {h['command']}")
+except (OSError, KeyError, json.JSONDecodeError) as e:
+    errors.append(f"hooks/hooks.json missing or invalid: {e}")
+for s in ("gate.py", "guard_hook.py", "stage_check.py", "attempts.py"):
+    if not (root / "scripts" / s).exists():
+        errors.append(f"scripts/{s} missing")
+if not (root / "templates/MAINTAINER_STATE.md").exists():
+    errors.append("templates/MAINTAINER_STATE.md missing")
 files = [p for p in root.rglob("*") if p.is_file() and ".git" not in p.parts and p.name != "check.py"]
 host = []
 if len(sys.argv) > 1:

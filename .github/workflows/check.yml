@@ -18,3 +18,5 @@ jobs:
           python-version: "3.12"
       - name: Package self-check
         run: python3 scripts/check.py
+      - name: Script tests
+        run: python3 -m unittest discover -s tests -v
