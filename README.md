@@ -24,6 +24,8 @@ A good build protocol (align, research with sources, plan in pieces, lock in, ru
 2. **Plan → Archetype field.** Every plan piece names which archetype's rules run it (inline by default; a separate subagent only for large or isolable pieces).
 3. **Lock in → cleanup + cadence.** Every locked-in plan ends with at least a leak sweep (machine paths, secrets, scratch files) on its own diff; a live system gets a maintainer health check on a cadence; a growth change needs a metric written down before it ships. The maintainer climbs in steps: L1 report only, L2 small fixes, L3 unattended. A state file holds the level and a pause switch, and only the human moves it up.
 
+**Using it with an orchestrator.** If you dispatch plan pieces to worker agents, route each piece to `def-infinity:<archetype>` using its `Archetype` field, and fall back to your generic worker when the field is missing. Your orchestrator's own limits and review step stay in charge.
+
 ## Why mechanical gates (v0.4)
 Every failure in the trap tests below was an agent not following a rule written in its own file (editing a project file it should only read, attempting a push, rewriting a file without data, writing a sync script instead of reporting). v0.2 → v0.3 fixed them by adding more text, and the same agents behaved differently on two machines. v0.4 adds code that enforces the most important limits whatever the model does. The prose rules stay as the first line of defense. On the trap bench the guard caught a maintainer writing a sync script that the old agent text did not stop, after one fix for writes made through shell commands: see `docs/RISULTATI.md`.
 
