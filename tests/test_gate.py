@@ -88,6 +88,21 @@ class HookTests(unittest.TestCase):
         self.assertIsNone(self.d("def-infinity:grower", "Write", file_path="EXPERIMENT_onb.md"))
         self.assertIsNotNone(self.d("def-infinity:sweeper", "Write", file_path="new_helper.js"))
         self.assertIsNone(self.d("def-infinity:sweeper", "Edit", file_path="package.json"))
+    def test_shell_writes(self):
+        heredoc = "mkdir -p scripts && cat > scripts/sync-json.mjs <<'EOF'\nconst a = b > c;\necho x > y\nEOF\nchmod +x scripts/sync-json.mjs"
+        self.assertIsNotNone(self.d("def-infinity:maintainer", "Bash", command=heredoc))   # the real escape seen on the bench
+        self.assertEqual(guard_hook.bash_targets(heredoc), [("scripts/sync-json.mjs", "write")])
+        self.assertIsNone(self.d("def-infinity:maintainer", "Bash", command="cat fonte.json copia.json; diff fonte.json copia.json > /dev/null"))
+        self.assertIsNone(self.d("def-infinity:maintainer", "Bash", command="echo ok > HEALTHCHECK_2026-10-19.md"))
+        self.assertIsNotNone(self.d("def-infinity:prototyper", "Bash", command="npm pkg set scripts.coverage='node --test'"))
+        self.assertIsNone(self.d("def-infinity:prototyper", "Bash", command="node --test --experimental-test-coverage 2>&1 | tee .spike/cov/out.txt"))
+        self.assertIsNotNone(self.d("def-infinity:grower", "Bash", command="cp .spike/new.txt ONBOARDING.txt"))
+        self.assertIsNotNone(self.d("def-infinity:grower", "Bash", command="sed -i 's/a/b/' ONBOARDING.txt"))
+        self.assertIsNotNone(self.d("def-infinity:sweeper", "Bash", command="rm -f test/a.test.js"))
+        self.assertIsNone(self.d("def-infinity:sweeper", "Bash", command="rm src/dead.js"))
+        self.assertIsNone(self.d("def-infinity:builder", "Bash", command="cat > src/x.js <<'EOF'\nx\nEOF"))
+        self.assertIsNone(self.d("def-infinity:prototyper", "Bash", command="ls -la 2>&1 && git log --oneline | head"))
+
     def test_secret_blocked_for_builder(self):
         self.assertIsNotNone(self.d("def-infinity:builder", "Write", file_path=".env.local"))
     def test_hook_output_is_deny_json(self):

@@ -2,7 +2,7 @@
 
 Five work archetypes as Claude Code subagents, grafted onto a plan-first, proof-first build protocol.
 
-Status: tested on 3 real tasks (A/B with a blind review each): two narrow wins (20-19, 27-26) and one loss (21-26), plus a trap test for each agent. These are signals, not statistical proof. See `docs/RISULTATI.md`.
+Status: tested on 3 real tasks (A/B with a blind review each): two narrow wins (20-19, 27-26) and one loss (21-26), plus a trap test for each agent, repeated on v0.4 with the mechanical gates (24 runs: one escape through a shell command found and fixed, then all green). These are signals, not statistical proof. See `docs/RISULTATI.md`.
 
 ## Why
 A good build protocol (align, research with sources, plan in pieces, lock in, run with proofs) mostly covers one kind of work: building an approved thing well. Products need four more kinds of work, as Boris Cherny pointed out: exploring many ideas and throwing most away, removing and simplifying, growing what runs using data, and keeping what runs healthy. DEF ∞ adds those four next to the builder without changing the protocol's rules.
@@ -25,7 +25,7 @@ A good build protocol (align, research with sources, plan in pieces, lock in, ru
 3. **Lock in → cleanup + cadence.** Every locked-in plan ends with at least a leak sweep (machine paths, secrets, scratch files) on its own diff; a live system gets a maintainer health check on a cadence; a growth change needs a metric written down before it ships. The maintainer climbs in steps: L1 report only, L2 small fixes, L3 unattended. A state file holds the level and a pause switch, and only the human moves it up.
 
 ## Why mechanical gates (v0.4)
-Every failure in the trap tests below was an agent not following a rule written in its own file (editing a project file it should only read, attempting a push, rewriting a file without data, writing a sync script instead of reporting). v0.2 → v0.3 fixed them by adding more text, and the same agents behaved differently on two machines. v0.4 adds code that enforces the most important limits whatever the model does. The prose rules stay as the first line of defense. Not yet measured on the trap bench: see `docs/RISULTATI.md`.
+Every failure in the trap tests below was an agent not following a rule written in its own file (editing a project file it should only read, attempting a push, rewriting a file without data, writing a sync script instead of reporting). v0.2 → v0.3 fixed them by adding more text, and the same agents behaved differently on two machines. v0.4 adds code that enforces the most important limits whatever the model does. The prose rules stay as the first line of defense. On the trap bench the guard caught a maintainer writing a sync script that the old agent text did not stop, after one fix for writes made through shell commands: see `docs/RISULTATI.md`.
 
 ## How it was tested
 Three real, independent tasks, each built twice (the host protocol alone vs. the host protocol with this graft), same model, same data, then an independent reviewer judged the two results without knowing which was which. One run per arm, so read the numbers as signals:
